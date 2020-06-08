@@ -1,28 +1,99 @@
 <template>
-  <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+  <div>
+      <table class="ui table">
+        <thead>
+          <tr>
+            <th>Id</th>
+            <th>Name</th>
+            <th>Las name</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="(user, index) in users" :key="index">
+            <td>{{ index + 1 }}</td>
+            <td>{{ user.name }}</td>
+            <td>{{ user.last_name }}</td>
+            <td><button @click="locate(user)">Ubicar</button></td>
+            <td><button @click="road(user)">Trazar camino</button></td>
+          </tr>
+        </tbody>
+      </table>
+      <div id='map' style="height: 50vh; width: 50vw"></div>
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
-
-export default {
-  name: 'App',
-  components: {
-    HelloWorld
+  import firebase from 'firebase/app'
+  import 'firebase/database'
+  import {Loader} from 'google-maps';
+  // or const {Loader} = require('google-maps'); without typescript
+  
+  //const options: LoaderOptions = {/* todo */};
+  
+  /*const map = new google.maps.Map(document.getElementById('map'), {
+      center: {lat: -34.397, lng: 150.644},
+      zoom: 8,
+  });
+  */
+  
+  export default {
+    name: 'App',
+    data: function(){
+      return {
+        users: null,
+      }
+    },
+    created: function(){
+      let users = firebase.database().ref('users')
+      let element = this
+      users.once('value').then(response => {
+        let array = response.val()
+        element.users = array
+      })
+      this.initMap()
+    },
+    methods: {
+      initMap: async function(){
+        const loader = new Loader('AIzaSyC090yeXmE6adzPnrEDPhG-vQ2bPdbdt4s');
+        this.google = await loader.load();
+        this.directionsRenderer = new this.google.maps.DirectionsRenderer
+        this.directionsService = new this.google.maps.DirectionsService
+        this.map = new this.google.maps.Map(document.getElementById("map"), {
+          center: { lat: -15.8427, lng: -70.0219 },
+          zoom: 16
+        });
+        this.directionsRenderer.setMap(this.map);
+      },
+      getLocation: function(user){
+        let location = firebase.database().ref(`/locations/${user.id}`)
+        return location.once('value')
+      },
+      locate: async function(user){
+        this.location = (await this.getLocation(user)).val()
+        this.map.setCenter(this.location)
+        this.marker = new this.google.maps.Marker({
+          position: this.location,
+          map: this.map,
+          title: user.name
+        })
+      },
+      road: async function (user) {
+        this.location = (await this.getLocation(user)).val()
+        var directionsRenderer = this.directionsRenderer
+        this.directionsService.route({
+          origin: { lat: -15.8427, lng: -70.0219 },  // Haight.
+          destination: this.location,
+          travelMode: 'DRIVING'
+        }, function(response, status) {
+          if (status == 'OK') {
+            directionsRenderer.setDirections(response);
+          } else {
+            window.alert('Directions request failed due to ' + status);
+          }
+        });
+      }
+    }
   }
-}
 </script>
-
 <style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
 </style>
