@@ -41,13 +41,19 @@
     data: function(){
       return {
         users: null,
+        location: null
+      }
+    },
+    watch: {
+      location: function(location){
+        console.log(location)
       }
     },
     created: function(){
       let users = firebase.database().ref('users')
       let element = this
       users.once('value').then(response => {
-        let array = response.val()
+        let array = response.val().filter(x => x != undefined)
         element.users = array
       })
       this.initMap()
@@ -60,12 +66,18 @@
         this.directionsService = new this.google.maps.DirectionsService
         this.map = new this.google.maps.Map(document.getElementById("map"), {
           center: { lat: -15.8427, lng: -70.0219 },
-          zoom: 16
+          zoom: 17
         });
-        this.directionsRenderer.setMap(this.map);
+        
       },
       getLocation: function(user){
         let location = firebase.database().ref(`/locations/${user.id}`)
+        if (this.marker){
+          this.marker.setMap(null)
+        }
+        if (this.directionsRenderer){
+          this.directionsRenderer.setMap(null)
+        }
         return location.once('value')
       },
       locate: async function(user){
@@ -79,6 +91,7 @@
       },
       road: async function (user) {
         this.location = (await this.getLocation(user)).val()
+        this.directionsRenderer.setMap(this.map);
         var directionsRenderer = this.directionsRenderer
         this.directionsService.route({
           origin: { lat: -15.8427, lng: -70.0219 },  // Haight.
