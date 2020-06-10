@@ -82,20 +82,6 @@
       }
       
     },
-    computed: {
-      filterUsers: function(){
-        return this.users.filter(user => {
-          console.log(user, this.search)
-          for (let key of Object.keys(this.search)){
-            //console.log(user[key], this.search[key], user[key].includes(this.search[key]))
-            if (user[key].includes(this.search[key])){
-              return true
-            }
-          }
-          return false
-        })
-      }
-    },
     methods: {
       addUser: function(){
         if (!this.user.location){
