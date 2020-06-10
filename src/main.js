@@ -2,6 +2,22 @@ import Vue from 'vue'
 import App from './App.vue'
 import firebase from 'firebase'
 
+Array.prototype.search = function(search){ // Funcion general para busqueda en la tabla, las tablas dependeran de esta en el futuro, migrar todas las tablas aqui plox
+  return this.filter(element => {
+    var keys = Object.keys(search)
+    for (var i = 0; i < keys.length; i++) {
+      var key = keys[i]
+      if (element[key] == undefined || element[key] == null){
+        element[key] = ""
+      }
+      if (element[key].toString().toLowerCase().search(search[key].toString().toLowerCase()) == -1){
+        return false
+      }
+    }
+    return true
+  })
+}
+
 Vue.config.productionTip = false
 var firebaseConfig = {
   apiKey: "AIzaSyC090yeXmE6adzPnrEDPhG-vQ2bPdbdt4s",

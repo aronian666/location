@@ -1,24 +1,49 @@
 <template>
-  <div>
+  <div style="display: grid; grid-template-columns: repeat(3, 1fr);" class="main">
+    <div style="grid-column: 1/3">
       <table class="ui table">
         <thead>
           <tr>
-            <th>Id</th>
-            <th>Name</th>
-            <th>Las name</th>
+            <th><input autocomplete="off" v-model="search.name" type="text" placeholder="Name"></th>
+            <th><input autocomplete="off" v-model="search.last_name" type="text" placeholder="Last Name"></th>
+            <th><input autocomplete="off" v-model="search.dni" type="text" placeholder="DNI"></th>
           </tr>
         </thead>
         <tbody>
-          <tr v-for="(user, index) in users" :key="index">
-            <td>{{ index + 1 }}</td>
+          <tr v-for="(user, id) in users.search(search)" :key="id">
             <td>{{ user.name }}</td>
             <td>{{ user.last_name }}</td>
+            <td>{{ user.dni }}</td>
             <td><button @click="locate(user)">Ubicar</button></td>
             <td><button @click="road(user)">Trazar camino</button></td>
           </tr>
         </tbody>
       </table>
-      <div id='map' style="height: 50vh; width: 50vw"></div>
+      <div id='map' style="height: 50vh; width: 100%"></div>
+    </div>
+    <div style="grid-column: 3">
+      <div>
+        <label for="user[name]">Name</label>
+        <input v-model="user.name" autocomplete="off" type="text" name="user[name]" id="user[name]">
+      </div>
+      <div>
+        <label for="user[last_name]">Last Name</label>
+        <input v-model="user.last_name" autocomplete="off" type="text" name="user[last_name]" id="user[last_name]">
+      </div>
+      <div>
+        <label for="user[dni]">DNI</label>
+        <input v-model="user.dni" autocomplete="off" type="text" name="user[dni]" id="user[dni]">
+      </div>
+      <div>
+        <label for="user[cellphone]">Cellphone</label>
+        <input v-model="user.cellphone" autocomplete="off" type="number" name="user[cellphone]" id="user[cellphone]">
+      </div>
+      <div>
+        <label for="user[email]">Email</label>
+        <input v-model="user.email" autocomplete="off" type="text" name="user[email]" id="user[email]">
+      </div>
+      <button @click="addUser">Add</button>
+    </div>
   </div>
 </template>
 
@@ -40,25 +65,48 @@
     name: 'App',
     data: function(){
       return {
-        users: null,
-        location: null
-      }
-    },
-    watch: {
-      location: function(location){
-        console.log(location)
+        users: [],
+        location: null,
+        user: {},
+        search: {}
       }
     },
     created: function(){
       let users = firebase.database().ref('users')
       let element = this
-      users.once('value').then(response => {
-        let array = response.val().filter(x => x != undefined)
-        element.users = array
+      users.on('value', response => {
+        element.users = Object.values(response.val())
       })
-      this.initMap()
+      if (!this.map){
+        this.initMap()
+      }
+      
+    },
+    computed: {
+      filterUsers: function(){
+        return this.users.filter(user => {
+          console.log(user, this.search)
+          for (let key of Object.keys(this.search)){
+            //console.log(user[key], this.search[key], user[key].includes(this.search[key]))
+            if (user[key].includes(this.search[key])){
+              return true
+            }
+          }
+          return false
+        })
+      }
     },
     methods: {
+      addUser: function(){
+        if (!this.user.location){
+          alert('Set a user location!')
+          return
+        }
+        let newUser = firebase.database().ref('users').push()
+        newUser.set(this.user)
+        this.user = {}
+        this.setNull()
+      },
       initMap: async function(){
         const loader = new Loader('AIzaSyC090yeXmE6adzPnrEDPhG-vQ2bPdbdt4s');
         this.google = await loader.load();
@@ -68,9 +116,25 @@
           center: { lat: -15.8427, lng: -70.0219 },
           zoom: 17
         });
+        this.map.addListener('click', event => {
+          this.user.location = {lat: event.latLng.lat(), lng: event.latLng.lng()}
+          this.setNull()
+          this.marker = new this.google.maps.Marker({
+            position: this.user.location,
+            map: this.map,
+          })
+        })
         
       },
-      getLocation: function(user){
+      setNull: function(){
+        if (this.marker){
+          this.marker.setMap(null)
+        }
+        if (this.directionsRenderer){
+          this.directionsRenderer.setMap(null)
+        }
+      },
+      /*getLocation: function(user){
         let location = firebase.database().ref(`/locations/${user.id}`)
         if (this.marker){
           this.marker.setMap(null)
@@ -79,18 +143,21 @@
           this.directionsRenderer.setMap(null)
         }
         return location.once('value')
-      },
+      },*/
       locate: async function(user){
-        this.location = (await this.getLocation(user)).val()
+        this.setNull()
+        this.location = user.location
         this.map.setCenter(this.location)
         this.marker = new this.google.maps.Marker({
           position: this.location,
           map: this.map,
           title: user.name
         })
+        
       },
       road: async function (user) {
-        this.location = (await this.getLocation(user)).val()
+        this.setNull()
+        this.location = user.location
         this.directionsRenderer.setMap(this.map);
         var directionsRenderer = this.directionsRenderer
         this.directionsService.route({
@@ -108,5 +175,8 @@
     }
   }
 </script>
-<style>
+<style scoped>
+  .main > div {
+    padding: 1em;
+  }
 </style>
