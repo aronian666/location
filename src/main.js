@@ -1,23 +1,41 @@
 import Vue from 'vue'
 import App from './App.vue'
-import firebase from 'firebase'
+import firebase from 'firebase/app'
 import router from './router'
 import 'semantic-ui-css/semantic.min.css';
 
 Array.prototype.search = function(search){ // Funcion general para busqueda en la tabla, las tablas dependeran de esta en el futuro, migrar todas las tablas aqui plox
+
   return this.filter(element => {
-    var keys = Object.keys(search)
-    for (var i = 0; i < keys.length; i++) {
-      var key = keys[i]
-      if (element[key] == undefined || element[key] == null){
-        element[key] = ""
+    if (typeof search == 'string'){
+      let values = Object.values(element)
+      for (let i = 0; i < values.length; i++){
+        if (typeof values[i] != 'string'){
+          continue
+        }
+        if (values[i].toLowerCase().search(search.toLowerCase()) != -1){
+          return true
+        }
       }
-      if (element[key].toString().toLowerCase().search(search[key].toString().toLowerCase()) == -1){
-        return false
+      
+      return false
+    } else {
+      var keys = Object.keys(search)
+      for (var i = 0; i < keys.length; i++) {
+        var key = keys[i]
+        if (element[key] == undefined || element[key] == null){
+          element[key] = ""
+        }
+        if (element[key].toString().toLowerCase().search(search[key].toString().toLowerCase()) == -1){
+          return false
+        }
       }
+      return true
     }
-    return true
   })
+}
+String.prototype.capitalize = function() {
+  return this.charAt(0).toUpperCase() + this.slice(1);
 }
 
 Vue.config.productionTip = false

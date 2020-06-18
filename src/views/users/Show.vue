@@ -25,7 +25,7 @@ export default {
     data: function(){
         this.properties = [
             {name: 'Name', property: 'name', icon: 'user'},
-            {name: '', property: 'phone', icon: 'phone volume'},
+            {name: '', property: 'cellphone', icon: 'phone volume'},
             {name: '', property: 'dni', icon: 'address card'},
             {name: '', property: 'email', icon: 'mail'}
         ]

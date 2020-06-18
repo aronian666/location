@@ -3,7 +3,6 @@
     <nav>
       <router-link to="/users/new">New User</router-link>
     </nav>
-    <div>caca</div>
     <router-view/>
   </div>
 </template>
@@ -13,7 +12,5 @@
 </script>
 
 <style>
-  body {
-    background: #24252a !important;
-  }
+  
 </style>

@@ -1,9 +1,9 @@
 <template>
     <form class="ui container" @submit.prevent="addUser">
-        <div class="ui inverted form stackable equal width grid">
+        <div class="ui form stackable equal width grid">
             <div class="column">
                 <div class="inline field">
-                    <label for="user[name]">Name:</label>
+                    <label for="user[name]">Nombre:</label>
                     <div class="ui icon input">
                         <input v-model="user.name" required type="text" placeholder="Nombre" name="user[name]" id="user[name]">
                         <i v-if="user.name" class="check icon" style="color: green"></i>
@@ -11,11 +11,28 @@
                     </div>
                 </div>
                 <div class="inline field">
-                    <label for="user[last_name]">Last Name:</label>
+                    <label for="user[last_name1]">Apellido Paterno:</label>
                     <div class="ui icon input">
-                        <input v-model="user.last_name" required type="text" placeholder="Apellido" name="user[last_name]" id="user[last_name]">
-                        
-                        <i v-if="user.last_name" class="check icon" style="color: green"></i>
+                        <input v-model="user.last_name1" required type="text" placeholder="Apellido" name="user[last_name1]" id="user[last_name2]">
+                        <i v-if="user.last_name1" class="check icon" style="color: green"></i>
+                        <i v-else class="expand arrows alternate icon" style="color: red"></i>
+                    </div>
+                </div>
+                <div class="inline field">
+                    <label for="user[last_name2]">Apellido Materno:</label>
+                    <div class="ui icon input">
+                        <input v-model="user.last_name2" required type="text" placeholder="Apellido" name="user[last_name2]" id="user[last_name2]">
+                        <i v-if="user.last_name2" class="check icon" style="color: green"></i>
+                        <i v-else class="expand arrows alternate icon" style="color: red"></i>
+                    </div>
+                </div>
+                <div class="inline field">
+                    <label for="user[name]">Genero:</label>
+                    <div class="ui icon input">
+                        <select v-model="user.gender" name="user[gender]" id="user[gender]">
+                            <option :value="gender" :key="gender" v-for="gender in ['Masculino', 'Femenino']">{{ gender }}</option>
+                        </select>
+                        <i v-if="user.gender" class="check icon" style="color: green"></i>
                         <i v-else class="expand arrows alternate icon" style="color: red"></i>
                     </div>
                 </div>
@@ -28,7 +45,7 @@
                     </div>
                 </div>
                 <div class="inline field">
-                    <label for="user[cellphone]">Cellphone:</label>
+                    <label for="user[cellphone]">Celular:</label>
                     <div class="ui icon input">
                         <input v-model="user.cellphone"  required placeholder="Cellphone" name="user[cellphone]" id="user[cellphone]">
                         <i v-if="!verify.cellphone && user.cellphone" class="check icon" style="color: green"></i>
@@ -36,7 +53,7 @@
                     </div>
                 </div>
                 <div class="inline field">
-                    <label for="user[email]">Email:</label>
+                    <label for="user[email]">Correo Electronico:</label>
                     <div class="ui icon input">
                         <input v-model="user.email" required type="email" placeholder="Email" name="user[email]" id="user[email]">
                         <i v-if="user.email && !verify.email" class="check icon" style="color: green"></i>
@@ -46,7 +63,7 @@
             </div>
             <div class="column field">
                 <label>Su casa</label>
-                <GoogleMaps :user="user" :options="{marker: true}" />
+                <GoogleMaps :user="user" :search="casa" :options="{marker: true}" />
             </div>
         </div>
         <button class="ui inverted teal button" :disabled="!verifyAllInputs">Add User</button> 
@@ -69,7 +86,8 @@ export default {
         }
         return {
             user: {},
-            verify: {}
+            verify: {},
+ 
         }
     },
     watch: {
@@ -112,6 +130,10 @@ export default {
             
             //this.verifyUser()
             //await this.ref.users.add(this.user)
+            if (!this.user.location){
+                alert('Selecciona un punto en el mapa')
+                return 
+            }
             let ref = this.ref.users.push()
             await ref.set(this.user)
             this.$router.push({ name: 'ShowUser', params: {id: ref.key, user: this.user}});
