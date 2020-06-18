@@ -1,6 +1,8 @@
 import Vue from 'vue'
 import App from './App.vue'
 import firebase from 'firebase'
+import router from './router'
+import 'semantic-ui-css/semantic.min.css';
 
 Array.prototype.search = function(search){ // Funcion general para busqueda en la tabla, las tablas dependeran de esta en el futuro, migrar todas las tablas aqui plox
   return this.filter(element => {
@@ -19,7 +21,7 @@ Array.prototype.search = function(search){ // Funcion general para busqueda en l
 }
 
 Vue.config.productionTip = false
-var firebaseConfig = {
+const firebaseConfig = {
   apiKey: "AIzaSyC090yeXmE6adzPnrEDPhG-vQ2bPdbdt4s",
   authDomain: "location-96c4d.firebaseapp.com",
   databaseURL: "https://location-96c4d.firebaseio.com",
@@ -32,5 +34,6 @@ var firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 
 new Vue({
-  render: h => h(App),
+  router,
+  render: h => h(App)
 }).$mount('#app')
