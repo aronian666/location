@@ -18,8 +18,10 @@ export default {
     },
     created: async function(){
         const loader = new Loader('AIzaSyC090yeXmE6adzPnrEDPhG-vQ2bPdbdt4s');
-        console.log(this.google)
-        this.google = await loader.load();
+        if (!this.google){
+            this.google = await loader.load();
+        }
+        
         
         this.directionsRenderer = new this.google.maps.DirectionsRenderer
         this.directionsService = new this.google.maps.DirectionsService

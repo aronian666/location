@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import App from './App.vue'
 import firebase from 'firebase/app'
+import 'firebase/auth'
 import router from './router'
 import 'semantic-ui-css/semantic.min.css';
 
@@ -50,8 +51,18 @@ const firebaseConfig = {
 };
 // Initialize Firebase
 firebase.initializeApp(firebaseConfig);
+const initializeAuth = new Promise(resolve => {
+  // this adds a hook for the initial auth-change event
+  firebase.auth().onAuthStateChanged(user => {
+    //authService.setUser(user)
+    resolve(user)
+  })
+})
+initializeAuth.then(user => {
+  new Vue({
+    router,
+    render: h => h(App, {props: {user}})
+  }).$mount('#app')
+})
 
-new Vue({
-  router,
-  render: h => h(App)
-}).$mount('#app')
+

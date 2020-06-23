@@ -1,6 +1,6 @@
 <template>
     <form class="ui container" @submit.prevent="addUser">
-        <div class="ui form stackable equal width grid">
+        <div class="ui form inverted stackable equal width grid">
             <div class="column">
                 <div class="inline field">
                     <label for="user[name]">Nombre:</label>
@@ -63,7 +63,7 @@
             </div>
             <div class="column field">
                 <label>Su casa</label>
-                <GoogleMaps :user="user" :search="casa" :options="{marker: true}" />
+                <GoogleMaps :user="user" :options="{marker: true}" />
             </div>
         </div>
         <button class="ui inverted teal button" :disabled="!verifyAllInputs">Add User</button> 
@@ -79,6 +79,9 @@ export default {
     components: {
         GoogleMaps
     },
+    props: {
+        currentUser: Object
+    },
     data: function(){
         this.ref = {
             //users: firestore().collection('users')
@@ -87,7 +90,6 @@ export default {
         return {
             user: {},
             verify: {},
- 
         }
     },
     watch: {
@@ -135,7 +137,7 @@ export default {
                 return 
             }
             let ref = this.ref.users.push()
-            await ref.set(this.user)
+            await ref.set(Object.assign({created: Date.now(), created_by: this.currentUser.uid}, this.user))
             this.$router.push({ name: 'ShowUser', params: {id: ref.key, user: this.user}});
         },
     }
