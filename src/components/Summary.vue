@@ -55,9 +55,13 @@ export default {
         getUsers: async function(date){
             const day = new Date(date)
             const now = new Date(day.getTime() + 86400000)
+            const raton = []
             const users = await range(database().ref('users'), 'created', day.getTime(), now.getTime())
             if (users) {
-                return Object.values(users)
+                for (let id of Object.keys(users)){
+                    raton.push({id: id, ...users[id]})
+                }
+                return raton
             }
             return []
         }

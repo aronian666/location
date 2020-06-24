@@ -48,7 +48,8 @@
 <script>
 export default {
     props: {
-        users: Array
+        users: Array,
+        searched: Array
     },
     data(){
         this.photos = [
@@ -61,7 +62,9 @@ export default {
     },
     methods: {
         toUser(user){
-            this.searched.push(user.id)
+            if (this.searched){
+                this.searched.push(user.id)
+            }
             const element = this
             setTimeout(function(){
                 element.$router.push({ name: 'users/:id', params: { id: user.id }})

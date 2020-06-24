@@ -1,6 +1,6 @@
 <template>
   <div>
-    <UserTable :users="users.search(search)"></UserTable>
+    <UserTable :searched="searched" :users="users.search(search)"></UserTable>
   </div>
 </template>
 
