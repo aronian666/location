@@ -54,10 +54,10 @@ export default {
         search(search){
             
             if (search && search.length > 0){
-                console.log('tengo algo')
+                //console.log('tengo algo')
                 this.$router.push({name: 'search/:search', params: {search}})
             } else {
-                console.log('no tengo nada')
+                //console.log('no tengo nada')
                 this.$router.push({name: 'search'})
             }
             

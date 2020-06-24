@@ -17,7 +17,7 @@ export default {
         }
     },
     created: async function(){
-        const loader = new Loader('AIzaSyC090yeXmE6adzPnrEDPhG-vQ2bPdbdt4s');
+        const loader = new Loader('AIzaSyDrIqo0eM9GvFIn7Zbe3sgkXAG2g6706qs');
         if (!this.google){
             this.google = await loader.load();
         }
@@ -77,6 +77,6 @@ export default {
     #map{
         width: 100%;
         height: 90%;
-        min-height: 200px;
+        min-height: 300px;
     }
 </style>

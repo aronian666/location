@@ -2,21 +2,17 @@
     <div>
         <div class="field">
             <label for="user[email]">Correo Electronico</label>
-            <input v-model="user.email" type="email" id="users[email]" name="users[email]">
+            <input v-model="user.email" placeholder="Correo electronico" type="email" id="users[email]" name="users[email]">
         </div>
         <div class="field">
-            <label for="user[password]">Contrasena</label>
-            <input v-model="user.password" type="password" id="users[password]" name="users[password]">
+            <label for="user[password]">Contraseña</label>
+            <input v-model="user.password" placeholder="Contraseña" type="password" id="users[password]" name="users[password]">
         </div>
         <div class="field">
-            <label for="user[name]">Nombre</label>
-            <input v-model="user.name" type="text" id="users[name]" name="users[name]">
+            <label for="user[password]">Repetir Contraseña</label>
+            <input v-model="user.repeat_password" placeholder="Contraseña" type="password" id="users[password]" name="users[password]">
         </div>
-        <div class="field">
-            <label for="user[cellphone]">Telefono</label>
-            <input v-model="user.cellphone" type="text" id="user[cellphone]" name="user[cellphone]">
-        </div>
-        <button class="ui button fluid">Registrarse</button>
+        <button class="ui button primary fluid">Registrarse</button>
     </div>
     
 </template>

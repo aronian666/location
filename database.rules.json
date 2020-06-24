@@ -1,0 +1,17 @@
+{
+  "rules": {
+    ".read": true,
+    ".write": true,
+    "users": {
+      ".indexOn": [
+        "name",
+        "last_name1",
+        "last_name2",
+        "created",
+        "dni",
+        "cellphone",
+        "email"
+      ]
+    }
+  }
+}

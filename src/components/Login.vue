@@ -1,6 +1,9 @@
 <template>
     <div class="flex">
         <div>
+            <div>
+                <img src="/logo.png">
+            </div>
             <div class="ui secondary pointing menu">
                 <a class="item" :class="{active: exist}" @click="exist = true">
                     Ingresar
@@ -55,11 +58,14 @@ export default {
         display: flex;
         justify-content: center;
         align-items: center;
-        height: 100vh;
+        
     }
-    form {
+    .flex > div {
         width: 100vw;
         max-width: 340px !important;
+    }
+    img {
+        width: 100%;
     }
     a {
         width: 50%;

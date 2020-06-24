@@ -2,13 +2,13 @@
     <div>
         <div class="field">
             <label for="user[email]">Correo Electronico</label>
-            <input v-model="user.email" type="email" id="users[email]" name="users[email]">
+            <input v-model="user.email" placeholder="Correo electronico" type="email" id="users[email]" name="users[email]">
         </div>
         <div class="field">
-            <label for="user[password]">Contrase;a</label>
-            <input v-model="user.password" type="password" id="users[password]" name="users[password]">
+            <label for="user[password]">Contraseña</label>
+            <input v-model="user.password" placeholder="Contraseña" type="password" id="users[password]" name="users[password]">
         </div>
-        <button class="ui button fluid">Ingresar</button>
+        <button class="ui button primary fluid">Ingresar</button>
     </div>
     
 </template>

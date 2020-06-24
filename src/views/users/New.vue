@@ -1,73 +1,79 @@
 <template>
-    <form class="ui container" @submit.prevent="addUser">
-        <div class="ui form stackable equal width grid">
-            <div class="column">
-                <div class="inline field">
-                    <label for="user[name]">Nombre:</label>
-                    <div class="ui icon input">
-                        <input v-model="user.name" required type="text" placeholder="Nombre" name="user[name]" id="user[name]">
-                        <i v-if="user.name" class="check icon" style="color: green"></i>
-                        <i v-else class="expand arrows alternate icon" style="color: red"></i>
-                    </div>
-                </div>
-                <div class="inline field">
-                    <label for="user[last_name1]">Apellido Paterno:</label>
-                    <div class="ui icon input">
-                        <input v-model="user.last_name1" required type="text" placeholder="Apellido" name="user[last_name1]" id="user[last_name2]">
-                        <i v-if="user.last_name1" class="check icon" style="color: green"></i>
-                        <i v-else class="expand arrows alternate icon" style="color: red"></i>
-                    </div>
-                </div>
-                <div class="inline field">
-                    <label for="user[last_name2]">Apellido Materno:</label>
-                    <div class="ui icon input">
-                        <input v-model="user.last_name2" required type="text" placeholder="Apellido" name="user[last_name2]" id="user[last_name2]">
-                        <i v-if="user.last_name2" class="check icon" style="color: green"></i>
-                        <i v-else class="expand arrows alternate icon" style="color: red"></i>
-                    </div>
-                </div>
-                <div class="inline field">
-                    <label for="user[name]">Genero:</label>
-                    <div class="ui icon input">
-                        <select v-model="user.gender" name="user[gender]" id="user[gender]">
-                            <option :value="gender" :key="gender" v-for="gender in ['Masculino', 'Femenino']">{{ gender }}</option>
-                        </select>
-                        <i v-if="user.gender" class="check icon" style="color: green"></i>
-                        <i v-else class="expand arrows alternate icon" style="color: red"></i>
-                    </div>
-                </div>
-                <div class="inline field">
-                    <label for="user[dni]">DNI:</label>
-                    <div class="ui icon input">
-                        <input v-model="user.dni" required type="number" placeholder="DNI" name="user[dni]" id="user[dni]">
-                        <i v-if="!verify.dni && user.dni" class="check icon" style="color: green"></i>
-                        <i v-else class="expand arrows alternate icon" style="color: red"></i>
-                    </div>
-                </div>
-                <div class="inline field">
-                    <label for="user[cellphone]">Celular:</label>
-                    <div class="ui icon input">
-                        <input v-model="user.cellphone"  required placeholder="Cellphone" name="user[cellphone]" id="user[cellphone]">
-                        <i v-if="!verify.cellphone && user.cellphone" class="check icon" style="color: green"></i>
-                        <i v-else class="expand arrows alternate icon" style="color: red"></i>
-                    </div>
-                </div>
-                <div class="inline field">
-                    <label for="user[email]">Correo Electronico:</label>
-                    <div class="ui icon input">
-                        <input v-model="user.email" required type="email" placeholder="Email" name="user[email]" id="user[email]">
-                        <i v-if="user.email && !verify.email" class="check icon" style="color: green"></i>
-                        <i v-else class="expand arrows alternate icon" style="color: red"></i>
-                    </div>
-                </div>
-            </div>
-            <div class="column field">
-                <label>Su casa</label>
-                <GoogleMaps :user="user" :options="{marker: true}" />
-            </div>
+    <div class="ui container">
+        <div class="flex">
+            <img src="/logo.png">
         </div>
-        <button class="ui teal button" :disabled="!verifyAllInputs">Add User</button> 
-    </form>
+        <form @submit.prevent="addUser">
+            <div class="ui form stackable width grid">
+                <div class="six wide column">
+                    <div class="field">
+                        <label for="user[name]">Nombre:</label>
+                        <div class="ui icon input">
+                            <input v-model="user.name" required type="text" placeholder="Nombre" name="user[name]" id="user[name]">
+                            <i v-if="user.name" class="check icon" style="color: green"></i>
+                            <i v-else class="expand arrows alternate icon" style="color: red"></i>
+                        </div>
+                    </div>
+                    <div class="field">
+                        <label for="user[last_name1]">Apellido Paterno:</label>
+                        <div class="ui icon input">
+                            <input v-model="user.last_name1" required type="text" placeholder="Apellido" name="user[last_name1]" id="user[last_name2]">
+                            <i v-if="user.last_name1" class="check icon" style="color: green"></i>
+                            <i v-else class="expand arrows alternate icon" style="color: red"></i>
+                        </div>
+                    </div>
+                    <div class="field">
+                        <label for="user[last_name2]">Apellido Materno:</label>
+                        <div class="ui icon input">
+                            <input v-model="user.last_name2" required type="text" placeholder="Apellido" name="user[last_name2]" id="user[last_name2]">
+                            <i v-if="user.last_name2" class="check icon" style="color: green"></i>
+                            <i v-else class="expand arrows alternate icon" style="color: red"></i>
+                        </div>
+                    </div>
+                    <div class="field">
+                        <label for="user[name]">Genero:</label>
+                        <div class="ui icon input">
+                            <select v-model="user.gender" name="user[gender]" id="user[gender]">
+                                <option :value="gender" :key="gender" v-for="gender in ['Masculino', 'Femenino']">{{ gender }}</option>
+                            </select>
+                            <i v-if="user.gender" class="check icon" style="color: green"></i>
+                            <i v-else class="expand arrows alternate icon" style="color: red"></i>
+                        </div>
+                    </div>
+                    <div class="field">
+                        <label for="user[dni]">DNI:</label>
+                        <div class="ui icon input">
+                            <input v-model="user.dni" required type="number" placeholder="DNI" name="user[dni]" id="user[dni]">
+                            <i v-if="!verify.dni && user.dni" class="check icon" style="color: green"></i>
+                            <i v-else class="expand arrows alternate icon" style="color: red"></i>
+                        </div>
+                    </div>
+                    <div class="field">
+                        <label for="user[cellphone]">Celular:</label>
+                        <div class="ui icon input">
+                            <input v-model="user.cellphone"  required placeholder="Celular" name="user[cellphone]" id="user[cellphone]">
+                            <i v-if="!verify.cellphone && user.cellphone" class="check icon" style="color: green"></i>
+                            <i v-else class="expand arrows alternate icon" style="color: red"></i>
+                        </div>
+                    </div>
+                    <div class="field">
+                        <label for="user[email]">Correo Electronico:</label>
+                        <div class="ui icon input">
+                            <input v-model="user.email" required type="email" placeholder="Correo electronico" name="user[email]" id="user[email]">
+                            <i v-if="user.email && !verify.email" class="check icon" style="color: green"></i>
+                            <i v-else class="expand arrows alternate icon" style="color: red"></i>
+                        </div>
+                    </div>
+                </div>
+                <div class="ten wide column field">
+                    <label>Su casa</label>
+                    <GoogleMaps :user="user" :options="{marker: true}" />
+                </div>
+            </div>
+            <button class="ui primary button" :disabled="!verifyAllInputs">Añadir usuario</button> 
+        </form>
+    </div>
+    
 </template>
 
 <script>
@@ -123,7 +129,7 @@ export default {
     },
     computed: {
         verifyAllInputs: function(){
-            console.log(Object.values(this.verify))
+            //console.log(Object.values(this.verify))
             return Object.values(this.verify).filter(x => x != null).length == 0
         }
     },
@@ -146,19 +152,17 @@ export default {
 </script>
 
 <style scoped>
-    .inline.field {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-    }
-    .inline.field label {
-        width: 25% !important;
-    }
-    .inline.field div {
-        width: 75% !important;
-    } 
     button {
         margin-top: 2rem !important;
+    }
+    .flex {
+        display: flex;
+        justify-content: center;
+        align-self: center;
+    }
+    img {
+        width: 100%;
+        max-width: 300px;
     }
 </style>
 

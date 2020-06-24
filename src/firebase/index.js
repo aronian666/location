@@ -5,7 +5,7 @@ export const where = async (ref, key, value) => {
 }
 
 export const range = async (ref, key, start, end) => {
-    console.log(start, end)
+    //console.log(start, end)
     return (await ref.orderByChild(key).startAt(start).endAt(end).once('value')).val()
 }
 /*export const where = async (ref, search) => {
