@@ -137,7 +137,7 @@ export default {
                 return 
             }
             let ref = this.ref.users.push()
-            await ref.set(Object.assign({created: Date.now(), created_by: this.currentUser.uid}, this.user))
+            await ref.set(Object.assign({created: Date.now() - 18000000, created_by: this.currentUser.uid}, this.user))
             this.$router.push({ name: 'users/:id', params: {id: ref.key, user: this.user}});
         },
     }

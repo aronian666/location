@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <div v-if="false" style="position:fixed;display:flex;flex-direction:column;top:0;bottom:0;left:0;width:200px;background:#1B1C1D;overflow-x:hidden;flex:1">
+    <div v-if="user" style="position:fixed;display:flex;flex-direction:column;top:0;bottom:0;left:0;width:200px;background:#1B1C1D;overflow-x:hidden;flex:1">
       <div class="ui borderless compact fluid inverted vertical menu">
         <router-link to="/" class="item" :class="{active: $route.name == 'home'}"><b>Inicio</b></router-link>
         <div class="item">
@@ -17,7 +17,7 @@
         </div>
       </div>
     </div>
-    <div>
+    <div style="margin-left: 200px">
       <router-view :current-user="user"/>
     </div>
     

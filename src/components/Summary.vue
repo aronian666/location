@@ -56,7 +56,7 @@ export default {
             const day = new Date(date)
             const now = new Date(day.getTime() + 86400000)
             const raton = []
-            const users = await range(database().ref('users'), 'created', day.getTime(), now.getTime())
+            const users = await range(database().ref('users'), 'created', day.getTime() - 18000000, now.getTime() - 18000000)
             if (users) {
                 for (let id of Object.keys(users)){
                     raton.push({id: id, ...users[id]})
