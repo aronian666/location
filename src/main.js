@@ -59,6 +59,7 @@ const initializeAuth = new Promise(resolve => {
   })
 })
 initializeAuth.then(user => {
+  console.log(user)
   new Vue({
     router,
     render: h => h(App, {props: {user}})

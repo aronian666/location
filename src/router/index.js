@@ -15,27 +15,29 @@ Vue.use(VueRouter)
   const routes = [
   {
     path: '/',
-    name: 'Home',
+    name: 'home',
     component: Home
   },
   {
     path: '/search',
-    name: 'Search',
-    component: Search
-  },
-  {
-    path: '/search/:search',
-    name: 'Users',
-    component: Users
+    name: 'search',
+    component: Search,
+    children: [
+      {
+        name: 'search/:search',
+        path: ':search',
+        component: Users
+      }
+    ]
   },
   {
     path: '/users/new',
-    name: 'NewUser',
+    name: 'users/new',
     component: NewUser
   },
   {
     path: '/users/:id',
-    name: 'ShowUser',
+    name: 'users/:id',
     component: ShowUser,
     props: true
   },

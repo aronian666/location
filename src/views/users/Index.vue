@@ -1,58 +1,22 @@
 <template>
-  <section class="ui container">
-    <table class="ui very basic celled table" v-if="users.length > 0">
-      <thead>
-        <tr>
-          <th>Nombre</th>
-          <th>Apellido Paterno</th>
-          <th>Apellido Materno</th>
-          <th>DNI</th>
-          <th>Celular</th>
-          <th>Email</th>
-          <th>Acciones</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr v-for="user in users.search(search)" :key="user.id">
-          <td>
-            <h4 class="ui image header">
-              <img :src="photos[Math.floor(Math.random() * photos.length)]" class="ui mini rounded image">
-              <div class="content">
-                {{user.name}}
-                <div class="sub header">{{user.role}}
-              </div>
-            </div>
-          </h4></td>
-          <td>
-            {{user.last_name1}}
-          </td>
-          <td>
-            {{user.last_name2}}
-          </td>
-          <td>
-            {{user.dni}}
-          </td>
-          <td>
-            {{user.cellphone}}
-          </td>
-          <td>
-            {{user.email}}
-          </td>
-          <td>
-            <router-link :to="{ name: 'ShowUser', params: { id: user.id }}" class="ui positive basic button">Ver</router-link>
-            
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </section>
+  <div>
+    <UserTable :users="users.search(search)"></UserTable>
+  </div>
 </template>
 
 <script>
 import { database } from 'firebase/app';
-import 'firebase/database'
+import UserTable from '@/components/UserTable.vue'
 export default {
-  name: "App",
+  components: {
+    UserTable
+  },
+  name: "Users",
+  props: {
+    search: String,
+    currentUser: Object,
+    searched: Array
+  },
   data: function(){
     let db = database()
     this.ref = {
@@ -66,16 +30,10 @@ export default {
       'cellphone',
       'email',
     ]
-    this.photos = [
-      'https://semantic-ui.com/images/avatar2/large/kristy.png',
-      'https://semantic-ui.com/images/avatar2/large/matthew.png',
-      'https://semantic-ui.com/images/avatar2/large/molly.png',
-      'https://semantic-ui.com/images/avatar/large/elliot.jpg'
-    ]
+    
     return {
       users: [],
-      search: this.$route.params.search,
-      char: this.$route.params.search[0],
+      char: this.search[0],
     }
   },
   watch: {
@@ -87,16 +45,12 @@ export default {
     search: function(search){
       this.validateSearch(search)
     },
-    $route(to){
-      this.search = to.params.search
-    }
   },
   created: function(){
     this.getUsers(this.char)
   },
   methods: {
     validateSearch: function(search){
-      console.log(search)
       if (search.length == 0) {
         this.users = []
         this.char = ""
@@ -138,7 +92,8 @@ export default {
         users.push(Object.assign({id: user.id}, user.data()))
       })
       return users*/
-    }
+    },
+    
   }
 }
 </script>

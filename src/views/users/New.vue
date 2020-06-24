@@ -1,6 +1,6 @@
 <template>
     <form class="ui container" @submit.prevent="addUser">
-        <div class="ui form inverted stackable equal width grid">
+        <div class="ui form stackable equal width grid">
             <div class="column">
                 <div class="inline field">
                     <label for="user[name]">Nombre:</label>
@@ -66,7 +66,7 @@
                 <GoogleMaps :user="user" :options="{marker: true}" />
             </div>
         </div>
-        <button class="ui inverted teal button" :disabled="!verifyAllInputs">Add User</button> 
+        <button class="ui teal button" :disabled="!verifyAllInputs">Add User</button> 
     </form>
 </template>
 
@@ -138,7 +138,7 @@ export default {
             }
             let ref = this.ref.users.push()
             await ref.set(Object.assign({created: Date.now(), created_by: this.currentUser.uid}, this.user))
-            this.$router.push({ name: 'ShowUser', params: {id: ref.key, user: this.user}});
+            this.$router.push({ name: 'users/:id', params: {id: ref.key, user: this.user}});
         },
     }
 }
